@@ -22,15 +22,15 @@ class Fraction:
 
             self.numerator = rd.randint(1, 1000)
             self.denominator = rd.randint(1, 1000)
-            self.fraction = (self.numerator, self.denominator)
 
         else:
 
             self.numerator = fraction[0]
             self.denominator = fraction[1]
-            self.fraction = (fraction[0], fraction[1])
 
+        self.fraction = (self.numerator, self.denominator)
         self.reduced = self.reduce()
+        self.inverted = self.invert()
         self.name = self.name()
         self.type = self.fraction_type()
         self.latex = u'\u005c' + 'fraction' + "{" + str(self.numerator) + "}" + "{" + str(self.denominator) + "}"
@@ -60,68 +60,149 @@ class Fraction:
 
     def fraction_type(self):
 
-        if divisibility(self.denominator, self.numerator):
+        if self.numerator > self.denominator:
 
-            return 'multiple'
+            fraction_type = 'unwon'
 
-        elif self.numerator > self.denominator:
-
-            return 'unwon'
+            return fraction_type
 
         elif self.numerator < self.denominator:
 
-            return 'own'
+            fraction_type = 'won'
+
+            return fraction_type
+
+        elif divisibility(self.denominator, self.numerator):
+
+            fraction_type = 'multiple'
+
+            return fraction_type
 
 
     def reduce(self):
 
-        k = nb.gcd(self.fraction[0], self.fraction[1])
+        k = nb.gcd(self.numerator, self.denominator)
 
-        numerator = int(self.fraction[0]/k)
+        new_numerator = int(self.numerator / k)
 
-        denominator = int(self.fraction[1]/k)
+        new_denominator = int(self.denominator / k)
 
-        reduced_fraction = Fraction((numerator, denominator))
+        reduced_fraction = Fraction((new_numerator, new_denominator))
 
         return reduced_fraction
 
+    def invert(self):
 
-def denominator_reduction(fraction1, fraction2):
+        inverted_fraction = Fraction((self.denominator, self.numerator))
 
-    lcm_number = lcm(fraction1.denominator, fraction2.denominator)
+        return inverted_fraction
 
-    for num in [1, 2]:
+
+def reduce_to_same_denominator(fraction1, fraction2):
+
+    fractions = [fraction1, fraction2]
+
+    new_fractions = []
+
+    lcm_number = nb.lcm(fraction1.denominator, fraction2.denominator)
+
+    for fraction in fractions:
         
-        k = int(lcm_number / eval(f'fraction{num}').denominator)
+        k = int(lcm_number / fraction.denominator)
 
-        eval(f'fraction{num}').numerator = eval(f'fraction{num}').numerator * k
-        eval(f'fraction{num}').denominator = eval(f'fraction{num}').denominator * k
+        new_fraction = Fraction((fraction.numerator * k, fraction.denominator * k))
 
-    return (Fracao(fraction1.fraction), Fracao(fraction2.fraction))
+        new_fractions.append(new_fraction)
+
+    return new_fractions
 
 
 def equivalent(fraction1, fraction2):
 
     if fraction1.reduced == fraction2.reduced:
 
-        return True
+        result = True
+
+        return result
     
     else:
 
-        return False
+        result = False
+
+        return result
 
 
 def compare(fraction1, fraction2):
 
     if fraction1.denominator != fraction2.denominator:
 
-        fraction1, fraction2 = denominator_reduction(fraction1, fraction2)
+        same_denominator_fractions = reduce_to_same_denominator(fraction1, fraction2)
 
-        if fraction1[0]
+        fraction1 = same_denominator_fractions[0]
+        fraction2 = same_denominator_fractions[1]
 
-    else:
+    if fraction1.numerator > fraction2.numerator:
+
+        result_fraction = fraction1
+
+        return result_fraction
+
+    elif fraction1.numerator < fraction2.numerator:
+
+        result_fraction = fraction2
+
+        return result_fraction
     
-        (fraction1, fraction2)
+    else:
 
-question1 = Question()
-print(question1.items)
+        return "As frações são equivalentes"
+
+
+def sum_fractions(fraction1, fraction2):
+
+    if fraction1.denominator != fraction2.denominator:
+
+        same_denominator_fractions = reduce_to_same_denominator(fraction1, fraction2)
+
+        fraction1 = same_denominator_fractions[0]
+        fraction2 = same_denominator_fractions[1]
+
+    result_fraction = Fraction((fraction1.numerator + fraction2.numerator, fraction1.denominator))
+
+    return result_fraction
+
+
+def subtract_fractions(fraction1, fraction2):
+
+    if fraction1.denominator != fraction2.denominator:
+
+        same_denominator_fractions = reduce_to_same_denominator(fraction1, fraction2)
+
+        fraction1 = same_denominator_fractions[0]
+        fraction2 = same_denominator_fractions[1]
+
+    result_fraction = Fraction((fraction1.numerator - fraction2.numerator, fraction1.denominator))
+
+    return result_fraction
+
+
+def multiplie_fractions(fraction1, fraction2):
+
+    try:
+
+        result_fraction = Fraction((fraction1.numerator * fraction2.numerator, fraction1.denominator * fraction2.denominator))
+
+        return result_fraction
+
+    except:
+
+        result_fraction = Fraction((fraction1 * fraction2.numerator, fraction2.denominator))
+
+        return result_fraction
+
+
+def power_fraction(fraction, exponent):
+
+    result_fraction = Fraction((fraction.numerator ** exponent, fraction.denominator ** exponent))
+
+    return result_fraction
