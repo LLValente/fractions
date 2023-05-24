@@ -122,3 +122,4 @@ def lcm(num1, num2):
                 break
         
         return lcm_number
+

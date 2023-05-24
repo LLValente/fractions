@@ -1,6 +1,6 @@
 import random as rd
 from num2words import num2words as nw
-import numbers as nb
+from number_theory import *
 
 FRACTIONAL_NUMBERS_DICT =   {"2": "meio",
                     "3": "terço",
@@ -37,6 +37,15 @@ class Fraction:
 
 
     def name(self):
+        '''Names the Fraction object
+
+        Parameters
+
+            self (Fraction class object)
+
+        Returns
+
+            fraction_name (str): the fraction name'''
 
         numerator_name = nw(self.numerator, lang = 'pt-br').capitalize()
 
@@ -59,6 +68,15 @@ class Fraction:
 
 
     def fraction_type(self):
+        '''Says the type of the Fraction object
+
+        Parameters
+
+            self (Fraction class object)
+
+        Returns
+
+            fraction_type (str): the fraction type'''
 
         if self.numerator > self.denominator:
 
@@ -80,8 +98,17 @@ class Fraction:
 
 
     def reduce(self):
+        '''Gives the reduced fraction of the Fraction object
 
-        k = nb.gcd(self.numerator, self.denominator)
+        Parameters
+
+            self (Fraction class object)
+
+        Returns
+
+            reduced_fraction (Fraction class object): a reduced Fraction Object'''
+
+        k = nt.gcd(self.numerator, self.denominator)
 
         new_numerator = int(self.numerator / k)
 
@@ -92,6 +119,15 @@ class Fraction:
         return reduced_fraction
 
     def invert(self):
+        '''Inverts the Fraction object
+
+        Parameters
+
+            self (Fraction class object)
+
+        Returns
+
+            inverted_fraction (Fraction class object): a inverted Fraction Object'''
 
         inverted_fraction = Fraction((self.denominator, self.numerator))
 
@@ -99,12 +135,22 @@ class Fraction:
 
 
 def reduce_to_same_denominator(fraction1, fraction2):
+    '''Makes the Fraction objects have the same denominator
+
+    Parameters
+
+        fraction1 (Fraction class object): a Fraction object to be reduced to same denominator
+        fraction2 (Fraction class object): a Fraction object to be reduced to same denominator
+
+    Returns
+
+        new_fractions (list): a list containing the same-denominator Fraction objects'''
 
     fractions = [fraction1, fraction2]
 
     new_fractions = []
 
-    lcm_number = nb.lcm(fraction1.denominator, fraction2.denominator)
+    lcm_number = nt.lcm(fraction1.denominator, fraction2.denominator)
 
     for fraction in fractions:
         
@@ -118,6 +164,16 @@ def reduce_to_same_denominator(fraction1, fraction2):
 
 
 def equivalent(fraction1, fraction2):
+    '''Tests if the Fraction objects are equivalent
+
+    Parameters
+
+        fraction1 (Fraction class object): a Fraction object to be tested
+        fraction2 (Fraction class object): a Fraction object to be tested
+
+    Returns
+
+        result (bool): the logical value that says if the fractions are equivalent or not'''
 
     if fraction1.reduced == fraction2.reduced:
 
@@ -133,6 +189,16 @@ def equivalent(fraction1, fraction2):
 
 
 def compare(fraction1, fraction2):
+    '''Compares the Fraction objects to see which one are the greater fraction
+
+    Parameters
+
+        fraction1 (Fraction class object): a Fraction object to be compared
+        fraction2 (Fraction class object): a Fraction object to be compared
+
+    Returns
+
+        result_fraction (Fraction class object): the greater Fraction object'''
 
     if fraction1.denominator != fraction2.denominator:
 
@@ -159,6 +225,16 @@ def compare(fraction1, fraction2):
 
 
 def sum_fractions(fraction1, fraction2):
+    '''Sums up two Fraction objects
+
+    Parameters
+
+        fraction1 (Fraction class object): a Fraction object to be summed
+        fraction2 (Fraction class object): a Fraction object to be summed
+
+    Returns
+
+        result_fraction (Fraction class object): the sum result between both Fraction objects'''
 
     if fraction1.denominator != fraction2.denominator:
 
@@ -173,6 +249,16 @@ def sum_fractions(fraction1, fraction2):
 
 
 def subtract_fractions(fraction1, fraction2):
+    '''Subtracts two Fraction objects
+
+    Parameters
+
+        fraction1 (Fraction class object): a Fraction object to be subtracted
+        fraction2 (Fraction class object): a Fraction object to be subtracted
+
+    Returns
+
+        result_fraction (Fraction class object): the subtraction result between both Fraction objects'''
 
     if fraction1.denominator != fraction2.denominator:
 
@@ -187,6 +273,16 @@ def subtract_fractions(fraction1, fraction2):
 
 
 def multiplie_fractions(fraction1, fraction2):
+    '''Multiplies two Fraction objects
+
+    Parameters
+
+        fraction1 (Fraction class object): a Fraction object to be multiplied
+        fraction2 (Fraction class object): a Fraction object to be multiplied
+
+    Returns
+
+        result_fraction (Fraction class object): the multiplication result between both Fraction objects'''
 
     try:
 
@@ -201,8 +297,32 @@ def multiplie_fractions(fraction1, fraction2):
         return result_fraction
 
 
-def power_fraction(fraction, exponent):
+def power_fraction(fraction, n):
+    '''Powers a Fraction object to a exponent
 
-    result_fraction = Fraction((fraction.numerator ** exponent, fraction.denominator ** exponent))
+    Parameters
 
-    return result_fraction
+        fraction (Fraction class object): a Fraction object to be powered
+        n (int): the exponent for the Fraction object
+
+    Returns
+
+        result_fraction (Fraction class object): the power of the fraction to the n exponent result'''
+
+    if n > 0:
+
+        result_fraction = Fraction((fraction.numerator ** n, fraction.denominator ** n))
+    
+        return result_fraction
+
+    elif n < 0:
+
+        inverted_fraction = fraction.inverted
+
+        result_fraction = Fraction((inverted_fraction.numerator ** n, inverted_fraction.denominator ** n))
+
+        return result_fraction
+
+    elif n == 0:
+
+        return 1
