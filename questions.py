@@ -1,5 +1,13 @@
 import random as rd
+QUESTIONS_START =   {'': '', 
+                    '': '', 
+                    '': '', 
+                    '': ''}
 
+QUESTIONS_END =     {'': '', 
+                    '': '', 
+                    '': '', 
+                    '': ''}       
 def main():
 
     NUMBERS_DICT_9 =    {"1": 'Um',
@@ -45,129 +53,30 @@ def main():
                                 "10": 'décimo',
                                 "100": 'centésimo'}
 
-    def generate_fraction(max_numerator = 9, max_denominator = 10):
-        '''Create a fraction
-        
-        Parameters:
-        max_numerator (int): the maximum value for the numerator
-        max_denominator (int): the maximum value for the denomionator
+class Question:
 
-        Returns:
-        tupple: returns a tupple (numerator, denominator)'''
+    def __init__(self):
 
-        numerator = rd.randint(1, max_numerator)
-        denominator = rd.randint(2, max_denominator)
+        #self.start = QUESTIONS_START[self.type]
+        #self.end = QUESTIONS_START[self.type]
+        self.items = self.items()
+        self.answears = ''
 
-        fraction = (numerator, denominator)
-
-        return fraction
-
-
-    def generate_fractions(items_numbers = 6, max_numerator = 9, max_denominator = 10):
-        '''Creates k non-equal fractions
-        
-        Parameters:
-        items_numbers (int): numbers of fractions that will be generated
-        max_numerator (int): the maximum value for the numerator
-        max_denominator (int): the maximum value for the denomionator
-
-        Returns:
-        list: returns a list with the fractions generated'''
-
-        i = 0
+    def items(self, items_numbers = 6):
 
         fractions = []
 
-        while i < items_numbers:
+        i = 1
 
-            fraction = generate_fraction(max_numerator, max_denominator)
+        while i <= items_numbers:
 
-            while fraction in fractions:
-
-                fraction = generate_fraction(max_numerator, max_denominator)
-
+            fraction = Fracao()
             fractions.append(fraction)
 
-            i = i + 1
-        
+            i += 1
+
         return fractions
 
-
-    def generate_simple_periodic_decimal(num_integers = 1, num_periodical_numbers = 1):
-        '''Create a simple periodic decimal 
-        
-        Parameters:
-        num_integers (int): number of intergers before comma
-        num_periodical_numbers (int): number of periodical intergers after comma
-
-        Returns:
-        str: returns a decimal number with ellipsis notation'''
-
-        integer_upper_limit = "9" * num_integers
-
-        integer_lower_limit = "1" + "0" * (num_integers - 1)
-
-        integer_part = str(rd.randint(int(integer_lower_limit), int(integer_upper_limit)))
-
-        periodic_decimal = integer_part + ","
-
-        periodic_upper_limit = "9" * num_periodical_numbers
-
-        periodic_lower_limit = "1" + "0" * (num_periodical_numbers - 1)
-
-        periodical_part = str(rd.randint(int(periodic_lower_limit), int(periodic_upper_limit)))
-
-        for i in range(0, 3):
-
-            periodic_decimal = periodic_decimal + periodical_part
-
-        periodic_decimal = periodic_decimal + "..."
-
-        return periodic_decimal
-
-
-    def generate_complex_periodic_decimal(num_integers = 1, num_non_periodical_numbers = 2, num_periodical_numbers = 1):
-        '''Create a complex periodic decimal 
-        
-        Parameters:
-        num_integers (int): number of intergers before comma
-        num_non_periodical_numbers (int): number of non-periodical intergers after comma
-        num_periodical_numbers (int): number of periodical intergers after comma
-
-        Returns:
-        str: returns a decimal number with ellipsis notation'''
-
-        integer_upper_limit = "9" * num_integers
-
-        integer_lower_limit = "1" + "0" * (num_integers - 1)
-
-        integer_part = str(rd.randint(int(integer_lower_limit), int(integer_upper_limit)))
-
-        periodic_decimal = integer_part + ","
-
-        periodic_upper_limit = "9" * num_periodical_numbers
-
-        periodic_lower_limit = "1" + "0" * (num_periodical_numbers - 1)
-
-        periodic_part = str(rd.randint(int(periodic_lower_limit), int(periodic_upper_limit)))
-
-        non_periodical_number_after_comma = ""
-
-        for i in range(0, num_non_periodical_numbers):
-
-            to_be_added_after_comma_number = str(rd.randint(0, 9))
-
-            non_periodical_number_after_comma = non_periodical_number_after_comma + to_be_added_after_comma_number
-
-        periodic_decimal = periodic_decimal + non_periodical_number_after_comma
-
-        for i in range(0, 3):
-
-            periodic_decimal = periodic_decimal + periodic_part
-
-        periodic_decimal = periodic_decimal + "..."          
-
-        return periodic_decimal
     
     # Gera as frações e salva na lista 'fractions'
     # TODO: Adicionar as frações que envolvam os "avos".
