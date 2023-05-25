@@ -29,10 +29,11 @@ class Fraction:
             self.denominator = fraction[1]
 
         self.fraction = (self.numerator, self.denominator)
-        self.reduced = self.reduce()
-        self.inverted = self.invert()
         self.name = self.name()
         self.type = self.fraction_type()
+        self.reduced = self.reduce()
+        self.inverted = self.invert()
+        self.mixed = self.mixed_form()
         self.latex = u'\u005c' + 'fraction' + "{" + str(self.numerator) + "}" + "{" + str(self.denominator) + "}"
 
 
@@ -78,21 +79,21 @@ class Fraction:
 
             fraction_type (str): the fraction type'''
 
-        if self.numerator > self.denominator:
+        if divisibility(self.denominator, self.numerator):
 
-            fraction_type = 'unwon'
+            fraction_type = 'multiple'
+
+            return fraction_type
+
+        elif self.numerator > self.denominator:
+
+            fraction_type = 'improper'
 
             return fraction_type
 
         elif self.numerator < self.denominator:
 
-            fraction_type = 'won'
-
-            return fraction_type
-
-        elif divisibility(self.denominator, self.numerator):
-
-            fraction_type = 'multiple'
+            fraction_type = 'proper'
 
             return fraction_type
 
@@ -118,6 +119,7 @@ class Fraction:
 
         return reduced_fraction
 
+
     def invert(self):
         '''Inverts the Fraction object
 
@@ -132,6 +134,25 @@ class Fraction:
         inverted_fraction = Fraction((self.denominator, self.numerator))
 
         return inverted_fraction
+
+
+    def mixed_form(self):
+
+        if self.type == 'proper':
+
+            whole_part = 0
+            numerator_part = self.numerator
+            denominator_part = self.denominator
+
+            return (whole_part, numerator_part, denominator_part)
+
+        elif self.type == 'improper':
+
+            whole_part = self.numerator // self.denominator
+            numerator_part = self.numerator - whole_part * self.denominator
+            denominator_part = self.denominator
+
+            return (whole_part, numerator_part, denominator_part)
 
 
 def reduce_to_same_denominator(fraction1, fraction2):
@@ -297,6 +318,13 @@ def multiplie_fractions(fraction1, fraction2):
         return result_fraction
 
 
+def divide_fractions(fraction1, fraction2):
+
+    result_fraction = multiplie_fractions(fraction1, fraction2.inverted)
+    
+    return result_fraction
+
+
 def power_fraction(fraction, n):
     '''Powers a Fraction object to a exponent
 
@@ -326,3 +354,4 @@ def power_fraction(fraction, n):
     elif n == 0:
 
         return 1
+

@@ -1,15 +1,39 @@
 def divisibility(num1, num2):
+    '''Tests if a number divides another number
+
+        Parameters
+
+        num1 (int): the divisor number
+        num2 (int): the number to divided 
+
+        Returns
+
+        gcd_number (int): the greatest commom divisor between num1 and num2'''
 
     if num2 % num1 == 0:
 
-        return True
+        logical_result = True
+
+
+        return logical_result
 
     else:
 
-        return False 
+        logical_result = False
+
+        return logical_result
 
 
 def divisors(number):
+    '''Gives a list of divisors of a number
+
+        Parameters
+
+        number (int)
+
+        Returns
+
+        logical_result (bool)'''
 
     divisors = []
 
@@ -23,19 +47,42 @@ def divisors(number):
 
 
 def prime(number):
+    '''Tests if a number is either prime or not prime
+
+        Parameters
+
+        number (int): number to be tested
+
+        Returns
+
+        logical_result (bool)'''
+
 
     divisors_numbers = divisors(number)
 
     if len(divisors_numbers) == 2 and 1 in divisors_numbers and number in divisors_numbers:
 
-        return True
+        logical_result = True
+
+        return logical_result
 
     else: 
 
-        return False
+        logical_result = False
+
+        return logical_result
 
 
 def prime_numbers_until(number):
+    '''Returns a list of prime numbers lesser or equal to number variable
+
+        Parameters
+
+        number (int): upper limit of the list
+
+        Returns
+
+        prime_numbers (list): a list containing prime numbers lesser or equal to number variable'''
 
     prime_numbers = []
 
@@ -53,6 +100,16 @@ def prime_numbers_until(number):
 
 
 def gcd(num1, num2):
+    '''Returns the greatest commom divisor between two numbers
+
+        Parameters
+
+        num1 (int): a number to be calculated gcd with
+        num2 (int): a number to be calculated gcd with
+
+        Returns
+
+        gcd_number (int): the greatest commom divisor between num1 and num2'''
 
     max_number = max(num1, num2)
     min_number = min(num1, num2)
@@ -68,58 +125,68 @@ def gcd(num1, num2):
 
             intersection.append(number)
 
-    gcd = max(intersection)
+    gcd_number = max(intersection)
 
-    return gcd
+    return gcd_number
 
     
 def lcm(num1, num2):
+    '''Returns the least commom multiple between two numbers
 
-        max_number = max(num1, num2)
-        min_number = min(num1, num2)
+        Parameters
 
-        primes = prime_numbers_until(max_number)
+        num1 (int): a number to be calculated lcm with
+        num2 (int): a number to be calculated lcm with
 
-        col1 = num1
-        col2 = num2
+        Returns
 
-        lcm_number = 1
+        lcm_number (int): the least commom multiple between num1 and num2'''
 
-        while True:
+    max_number = max(num1, num2)
+    min_number = min(num1, num2)
 
-            for prime in primes:
+    primes = prime_numbers_until(max_number)
 
-                prime_divides_col1 = divisibility(prime, col1)
-                prime_divides_col2 = divisibility(prime, col2)
+    col1 = num1
+    col2 = num2
 
-                if prime_divides_col1 and prime_divides_col2:
+    lcm_number = 1
 
-                    col1 = int(col1 / prime)
-                    col2 = int(col2 / prime)
+    while True:
 
-                    lcm_number = lcm_number * prime
+        for prime in primes:
 
-                    break
+            prime_divides_col1 = divisibility(prime, col1)
+            prime_divides_col2 = divisibility(prime, col2)
 
-                elif prime_divides_col1:
+            if prime_divides_col1 and prime_divides_col2:
 
-                    col1 = int(col1 / prime)
+                col1 = int(col1 / prime)
+                col2 = int(col2 / prime)
 
-                    lcm_number = lcm_number * prime
-
-                    break
-
-                elif prime_divides_col2:
-
-                    col2 = int(col2 / prime)
-
-                    lcm_number = lcm_number * prime
-
-                    break
-
-            if col1 == 1 and col2 ==1:
+                lcm_number = lcm_number * prime
 
                 break
-        
-        return lcm_number
+
+            elif prime_divides_col1:
+
+                col1 = int(col1 / prime)
+
+                lcm_number = lcm_number * prime
+
+                break
+
+            elif prime_divides_col2:
+
+                col2 = int(col2 / prime)
+
+                lcm_number = lcm_number * prime
+
+                break
+
+        if col1 == 1 and col2 ==1:
+
+            break
+    
+    return lcm_number
 
