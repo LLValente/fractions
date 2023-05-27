@@ -1,38 +1,7 @@
 import fractions as frac
-
-Questions_dict = {'Drawing': {'question_header': '\\item Para cada fração a seguir, faça uma representação geométrica.',
-                            'pontuation': '\\textbf\{(1,0 pnts)\}',
-                            'items_number': 5,
-                            'double_items': False,
-                            'item_type': False,
-                            'level': 'easy',
-                            'question_ending': ''},
-
-                'Reading':  {'question_header': '\\item Escreva por extenso o nome de cada fração abaixo.',
-                            'pontuation': '\\textbf\{(1 pnts)\}',
-                            'items_number': 6,
-                            'double_items': False,
-                            'item_type': 'mixed',
-                            'level': 'easy',
-                            'question_ending': ''},
-
-                'Comparing':{'question_header': '\\item Observe as frações em cada item abaixo e assinale <, > ou =.',
-                            'pontuation': '\\textbf\{(1,5 pnts)\}',
-                            'items_number': 6,
-                            'double_items': True,
-                            'item_type': 'mixed',
-                            'level': 'easy',
-                            'question_ending': ''},
-
-                'Conversion':{'question_header': '.',
-                            'pontuation': '\\textbf\{(1,5 pnts)\}',
-                            'items_number': 6,
-                            'double_items': True,
-                            'item_type': 'mixed',
-                            'level': 'easy',
-                            'question_ending': ''},
-
-                '':         {}}
+import pyodbc
+import datetime
+import os
 
 
 class Question:
@@ -68,3 +37,22 @@ class Question:
     # Deverá escrever a questão em LaTeX
 
         pass
+
+
+def sign_in_question(dict):
+
+    conection_info = (
+        "Driver={SQL Server};"
+        "Server=DESKTOP-EKI2AGF\SQLEXPRESS;"
+        "Database=SQL_Exams_DB;"    
+    )
+
+    conection = pyodbc.connect(conection_info)
+
+    cursor = conection.cursor()
+
+    command = f"""INSERT INTO Questions (id_question, question_subject, question_type, question_difficulty, question_header, pontuation, double_items, items_number, question_ending, id_competence, register_date, register_user)
+    VALUES ('{dict['id_question']}', '{dict['question_subject']}', '{dict['question_type']}', '{dict['question_difficulty']}', '{dict['question_header']}', '{dict['pontuation']}', '{dict['double_items']}', '{dict['items_number']}', '{dict['question_ending']}', '{dict['id_competence']}', '{dict['register_date']}', '{dict['register_user']}')"""
+
+    cursor.execute(command)
+    cursor.commit()
