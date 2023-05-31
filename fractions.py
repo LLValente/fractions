@@ -1,6 +1,6 @@
 import random as rd
 from num2words import num2words as nw
-from number_theory import *
+import number_theory as nt
 
 FRACTIONAL_NUMBERS_DICT =   {"2": "meio",
                     "3": "terço",
@@ -16,24 +16,42 @@ FRACTIONAL_NUMBERS_DICT =   {"2": "meio",
 
 class Fraction:
 
-    def __init__(self, fraction=()):
+    def __init__(self, num = None, den = None, fraction = None):
 
-        if fraction == ():
+        def is_iterable(object):
 
-            self.numerator = rd.randint(1, 1000)
-            self.denominator = rd.randint(1, 1000)
+            try:
+                iter_obj = iter(object)
+                return True
+
+            except:
+                return False
+
+
+        if num == None and den == None and fraction == None:
+
+            numerator = rd.randint(1, 30)
+            denominator = rd.randint(1, 30)
+
+        elif type(num) is int and type(den) is int and fraction == None:
+
+            numerator = num
+            denominator = den
+
+        elif num == None and den == None and is_iterable(fraction) and len(fraction) == 2:
+
+            numerator = fraction[0]
+            denominator = fraction[1]
 
         else:
 
-            self.numerator = fraction[0]
-            self.denominator = fraction[1]
+            raise TypeError('Fraction class needs two integers or a list parameter containing two integers')
 
+        self.numerator = numerator
+        self.denominator = denominator
         self.fraction = (self.numerator, self.denominator)
         self.name = self.name()
         self.type = self.fraction_type()
-        self.reduced = self.reduce()
-        self.inverted = self.invert()
-        self.mixed = self.mixed_form()
         self.latex = u'\u005c' + 'fraction' + "{" + str(self.numerator) + "}" + "{" + str(self.denominator) + "}"
 
 
@@ -56,7 +74,7 @@ class Fraction:
 
             if self.numerator > 1:
 
-                denominator_name = str(self.denominator) + 's'
+                denominator_name = FRACTIONAL_NUMBERS_DICT[str(self.denominator)] + 's'
 
         else:
 
@@ -79,7 +97,7 @@ class Fraction:
 
             fraction_type (str): the fraction type'''
 
-        if divisibility(self.denominator, self.numerator):
+        if nt.divisibility(self.denominator, self.numerator):
 
             fraction_type = 'multiple'
 
@@ -115,7 +133,7 @@ class Fraction:
 
         new_denominator = int(self.denominator / k)
 
-        reduced_fraction = Fraction((new_numerator, new_denominator))
+        reduced_fraction = Fraction(fraction = (new_numerator, new_denominator))
 
         return reduced_fraction
 
@@ -131,7 +149,7 @@ class Fraction:
 
             inverted_fraction (Fraction class object): a inverted Fraction Object'''
 
-        inverted_fraction = Fraction((self.denominator, self.numerator))
+        inverted_fraction = Fraction(fraction = (self.denominator, self.numerator))
 
         return inverted_fraction
 
@@ -151,6 +169,14 @@ class Fraction:
             whole_part = self.numerator // self.denominator
             numerator_part = self.numerator - whole_part * self.denominator
             denominator_part = self.denominator
+
+            return (whole_part, numerator_part, denominator_part)
+
+        elif self.type == 'multiple':
+
+            whole_part = int(self.numerator / self.denominator)
+            numerator_part = 0
+            denominator_part = 0
 
             return (whole_part, numerator_part, denominator_part)
 

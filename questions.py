@@ -5,80 +5,44 @@ import os
 
 
 class Question:
-    # Alterar questões existentes
+    # Verificar se existe a id na base de dados
+    # Coletar dados existentes
+    # Alterar dados existentes
+    # Registrar dados inexistentes
 
 
     def __init__(self, id_question='', question_type=''):
 
-        def verify_id(id_question):
+        conection_info =    ("Driver={SQL Server};"
+                            "Server=DESKTOP-EKI2AGF\SQLEXPRESS;"
+                            "Database=SQL_Exams_DB;")
 
-            conection_info =    ("Driver={SQL Server};"
-                                "Server=DESKTOP-EKI2AGF\SQLEXPRESS;"
-                                "Database=SQL_Exams_DB;")
+        conection = pyodbc.connect(conection_info)
 
-            conection = pyodbc.connect(conection_info)
+        cursor = conection.cursor()
 
-            cursor = conection.cursor()
+        cursor.execute("SELECT * FROM Questions;")
 
-            cursor.execute("SELECT * FROM Questions;")
+        rows = cursor.fetchall()
 
-            rows = cursor.fetchall()
+        for row in rows:
 
-            for row in rows:
+            if id_question in row:
 
-                if id_question in row:
+                self.id = row[0]
+                self.subject = row[1]
+                self.type = row[2]
+                self.difficulty = row[3]
+                self.header = row[4]
+                self.pontuation = row[5]
+                self.double_items = row[6]
+                self.items_number = row[7]
+                self.ending = row[8]
+                self.id_competence = row[9]
+        
+        self.info = f"""id:   {self.id}\nsubject:    {self.subject}\ntype:   {self.type}\ndifficulty: {self.difficulty}\nheader: {self.header}\npontuation: {self.pontuation}\ndouble items:   {self.double_items}\nitems number:   {self.items_number}\nending: {self.ending}\ncompetence: {self.id_competence}"""
 
-                    self.id = row[0]
-                    self.subject = row[1]
-                    self.type = row[2]
-                    self.difficulty = row[3]
-                    self.header = row[4]
-                    self.pontuation = row[5]
-                    self.double_items = row[6]
-                    self.items_number = row[7]
-                    self.ending = row[8]
-                    self.id_competence = row[9]
-
-                    return True
-
-            return False
-
-
-        def register_question(self, question_type=''):
-
-            if question_type == '':
-
-                question_type = input('Qual o tipo da questão?')
-
-            self.id = 'frac' + question_type.lower()[-1:-4]
-            self.subject = 'Fractions'
-            self.type = question_type
-            self.difficulty = input('Qual o nível de dificuldade da questão? (1, 2 ou 3):')
-            self.header = input('Qual o cabeçalho da questão? (Em string):')
-            self.pontuation = input('Quanto vale a questão? (Em decimais):')
-            self.double_items = input('Duplicar items? (0 ou 1):')
-            self.items_number = input('Qual a quantidade de items na questão? (Em int):')
-            self.ending = input('Qual o final da questão? (Em string):')
-            self.id_competence = input('Qual a competência da BNCC? (Em string):')
-
-            conection_info =    ("Driver={SQL Server};"
-                                "Server=DESKTOP-EKI2AGF\SQLEXPRESS;"
-                                "Database=SQL_Exams_DB;")
-
-            conection = pyodbc.connect(conection_info)
-
-            cursor = conection.cursor()
-
-            command = f"""INSERT INTO Questions (id_question, question_subject, question_type, question_difficulty, question_header, pontuation, double_items, items_number, question_ending, id_competence, register_date, register_user)
-            VALUES ('{self.id}', '{self.subject}', '{self.type}', {self.difficulty}, '{self.header}', {self.pontuation}, {self.double_items}, {self.items_number}, '{self.ending}', '{self.id_competence}', '{str(datetime.datetime.now())[:-7]}', '{os.getlogin()}')"""
-
-            cursor.execute(command)
-            cursor.commit()
-
-
-        if not verify_id(id_question):
-
-            register_question(question_type)
+        print(self.info)
 
 
     def items(self):
@@ -113,19 +77,33 @@ class Question:
         latex_items_block = "\t\t" + r"\begin{enumerate}" + "\n"
         latex_items = ''
 
-        for fraction in fractions:
+        if self.double_items == 0:
 
-            latex_item = "\t\t\t" + r"\item $\frac{" + str(fraction.numerator) + "}{" + str(fraction.denominator) + "}$" + "\n" # ou r"\item \frac{}{} e \frac{}{}***"
+            for fraction in fractions:
 
-            latex_items = latex_items + latex_item
+                latex_item = "\t\t\t" + r"\item $\frac{" + str(fraction.numerator) + "}{" + str(fraction.denominator) + "}$" + "\n" # ou r"\item \frac{}{} e \frac{}{}***"
+
+                latex_items = latex_items + latex_item
+
+        elif self.double_items == 1:
+
+            for i in range(0, int(len(fractions)/2)):
+
+                latex_item = "\t\t\t" + r"\item $\frac{" + str(fractions[i].numerator) + "}{" + str(fractions[i].denominator) + "}$" + " e " + r"$\frac{" + str(fractions[i + 1].numerator) + "}{" + str(fractions[i + 1].denominator) + "}$" + "\n"
+
+                latex_items = latex_items + latex_item
 
         if self.ending == '':
 
             latex_ending = "\t\t" + r"\end{enumerate}"
         
+        elif self.ending == r'\n':
+
+            latex_ending = "\t\t" + r"\end{enumerate}" + "\n"
+
         else:
 
-            latex_ending = "\t" + self.ending + "\n\t\t" + r"\end{enumerate}"
+            pass
 
         print(latex_header + latex_items_block +  latex_items + latex_ending)
 
