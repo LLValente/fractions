@@ -3,15 +3,15 @@ from num2words import num2words as nw
 import number_theory as nt
 
 FRACTIONAL_NUMBERS_DICT =   {"2": "meio",
-                    "3": "terço",
-                    "4": 'quarto',
-                    "5": 'quinto',
-                    "6": 'sexto',
-                    "7": 'sétimo',
-                    "8": 'oitavo',
-                    "9": 'nono',
-                    "10": 'décimo',
-                    "100": 'centésimo'}         
+                            "3": "terço",
+                            "4": 'quarto',
+                            "5": 'quinto',
+                            "6": 'sexto',
+                            "7": 'sétimo',
+                            "8": 'oitavo',
+                            "9": 'nono',
+                            "10": 'décimo',
+                            "100": 'centésimo'}         
 
 
 class Fraction:
@@ -87,7 +87,7 @@ class Fraction:
 
 
     def fraction_type(self):
-        '''Says the type of the Fraction object
+        '''Gives the classification of the fraction
 
         Parameters
 

@@ -12,11 +12,9 @@ def main():
     ws_ef = wb_ef['Planilha1']
     ws_em = wb_em['Planilha1']
 
-    conection_info = (
-        "Driver={SQL Server};"
-        "Server=DESKTOP-EKI2AGF\SQLEXPRESS;"
-        "Database=SQL_Exams_DB;"    
-    )
+    conection_info =    ("Driver={SQL Server};"
+                        "Server=DESKTOP-EKI2AGF\SQLEXPRESS;"
+                        "Database=SQL_Exams_DB;")
 
     conection = pyodbc.connect(conection_info)
 

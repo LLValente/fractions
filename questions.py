@@ -11,34 +11,29 @@ class Question:
     # Registrar dados inexistentes
 
 
-    def __init__(self, id_question='', question_type=''):
+    def __init__(self, id_question, question_type=''):
 
         conection_info =    ("Driver={SQL Server};"
                             "Server=DESKTOP-EKI2AGF\SQLEXPRESS;"
                             "Database=SQL_Exams_DB;")
 
+        global conection
+
         conection = pyodbc.connect(conection_info)
 
         cursor = conection.cursor()
 
-        cursor.execute("SELECT * FROM Questions;")
+        cursor.execute("SELECT * FROM Questions")
 
-        rows = cursor.fetchall()
+        while True:
 
-        for row in rows:
+            row = cursor.fetchone()
 
             if id_question in row:
 
-                self.id = row[0]
-                self.subject = row[1]
-                self.type = row[2]
-                self.difficulty = row[3]
-                self.header = row[4]
-                self.pontuation = row[5]
-                self.double_items = row[6]
-                self.items_number = row[7]
-                self.ending = row[8]
-                self.id_competence = row[9]
+                break
+
+        self.id, self.subject, self.type, self.difficulty, self.header, self.pontuation, self.double_items, self.items_number, self.ending, self.id_competence = row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9]
         
         self.info = f"""id:   {self.id}\nsubject:    {self.subject}\ntype:   {self.type}\ndifficulty: {self.difficulty}\nheader: {self.header}\npontuation: {self.pontuation}\ndouble items:   {self.double_items}\nitems number:   {self.items_number}\nending: {self.ending}\ncompetence: {self.id_competence}"""
 
@@ -81,7 +76,7 @@ class Question:
 
             for fraction in fractions:
 
-                latex_item = "\t\t\t" + r"\item $\frac{" + str(fraction.numerator) + "}{" + str(fraction.denominator) + "}$" + "\n" # ou r"\item \frac{}{} e \frac{}{}***"
+                latex_item = "\t\t\t" + r"\item $\frac{" + str(fraction.numerator) + "}{" + str(fraction.denominator) + "}$\n"
 
                 latex_items = latex_items + latex_item
 
@@ -93,9 +88,9 @@ class Question:
 
                 latex_items = latex_items + latex_item
 
-        if self.ending == '':
+        if self.ending != '' and self.ending != r'\n':
 
-            latex_ending = "\t\t" + r"\end{enumerate}"
+            latex_ending = "\t" + self.ending + "\n\t\t" + r"\end{enumerate}"
         
         elif self.ending == r'\n':
 
@@ -107,3 +102,22 @@ class Question:
 
         print(latex_header + latex_items_block +  latex_items + latex_ending)
 
+
+def register_question():
+
+    cursor = conection.cursor()
+
+    command =   f"""ALTER TABLE Questions DROP CONSTRAINT fk_id_competence;
+                ALTER TABLE Exams DROP CONSTRAINT fk_id_question;
+                ALTER TABLE Exams DROP CONSTRAINT fk_id_competence2;
+
+                INSERT INTO Questions(id_question, question_subject, question_type, question_difficulty, question_header, pontuation, double_items, items_number, question_ending, id_competence, register_date, register_user)
+                VALUES ('{dict['id_question']}', '{dict['question_subject']}', '{dict['question_type']}', '{dict['question_difficulty']}', '{dict['question_header']}', '{dict['pontuation']}', '{dict['double_items']}', '{dict['items_number']}', '{dict['question_ending']}', '{dict['id_competence']}', '{dict['register_date']}', '{dict['register_user']}')
+
+                ALTER TABLE Questions ADD CONSTRAINT fk_id_competence FOREIGN KEY (id_competence) REFERENCES BNCC (id_competence)
+                ALTER TABLE Exams ADD CONSTRAINT fk_id_question FOREIGN KEY (id_question) REFERENCES Questions (id_question)
+                ALTER TABLE Exams ADD CONSTRAINT fk_id_competence2 FOREIGN KEY (id_competence) REFERENCES BNCC (id_competence)"""
+
+    cursor.execute(command)
+
+    pass

@@ -142,51 +142,19 @@ def lcm(num1, num2):
 
         lcm_number (int): the least commom multiple between num1 and num2'''
 
-    max_number = max(num1, num2)
-    min_number = min(num1, num2)
+    k = 1
 
-    primes = prime_numbers_until(max_number)
+    mult_num1 = num1 * k
+    mult_num2 = num2 * k
 
-    col1 = num1
-    col2 = num2
+    while mult_num1 != mult_num2:
 
-    lcm_number = 1
+        k += 1
 
-    while True:
+        mult_num1 = num1 * k
+        mult_num2 = num2 * k
 
-        for prime in primes:
+    lcm_number = mult_num1
 
-            prime_divides_col1 = divisibility(prime, col1)
-            prime_divides_col2 = divisibility(prime, col2)
-
-            if prime_divides_col1 and prime_divides_col2:
-
-                col1 = int(col1 / prime)
-                col2 = int(col2 / prime)
-
-                lcm_number = lcm_number * prime
-
-                break
-
-            elif prime_divides_col1:
-
-                col1 = int(col1 / prime)
-
-                lcm_number = lcm_number * prime
-
-                break
-
-            elif prime_divides_col2:
-
-                col2 = int(col2 / prime)
-
-                lcm_number = lcm_number * prime
-
-                break
-
-        if col1 == 1 and col2 ==1:
-
-            break
-    
     return lcm_number
 
