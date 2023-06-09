@@ -1,6 +1,7 @@
 import os
 import sys
 import random as rd
+import datetime
 import pyodbc
 
 main_path = os.getcwd()
@@ -100,9 +101,9 @@ class Question:
 
     def write_question_in_latex(self):
 
-        data_path = os.path.join(os.getcwd(), "data")
+        data_path = os.path.join(os.getcwd(), "exams")
 
-        file_path = os.path.join(data_path, "temp.tex")
+        file_path = os.path.join(data_path, f"Avaliação - Fractions - [{str(datetime.date.today())}].tex")
 
         fractions = self.items
 

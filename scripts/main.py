@@ -7,15 +7,15 @@ import operations as op
 import questions as qst
 import aspose.pdf as ap
 
+SUBJECT = "Fractions"
+
 def main():
 
     data_path = os.path.join(os.getcwd(), "data")
 
     file_path = os.path.join(data_path, "temp.tex")
 
-    subject = "Fractions"
-
-    consult = sqlm.Consultation(subject, data_type="subject")
+    consult = sqlm.Consultation(SUBJECT, data_type="subject")
 
     begin_document()
 
@@ -32,9 +32,9 @@ def main():
 
 def begin_document():
 
-    data_path = os.path.join(os.getcwd(), "data")
+    data_path = os.path.join(os.getcwd(), "exams")
 
-    file_path = os.path.join(data_path, "temp.tex")
+    file_path = os.path.join(data_path, f"Avaliação - {SUBJECT} - [{str(datetime.date.today())}].tex")
 
     file = open(file_path, "w", encoding="UTF-8")
 
@@ -48,9 +48,9 @@ def begin_document():
 
 def end_document():
 
-    data_path = os.path.join(os.getcwd(), "data")
+    data_path = os.path.join(os.getcwd(), "exams")
 
-    file_path = os.path.join(data_path, "temp.tex")
+    file_path = os.path.join(data_path, f"Avaliação - {SUBJECT} - [{str(datetime.date.today())}].tex")
     
     file = open(file_path, "a+", encoding="UTF-8")
 
