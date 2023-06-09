@@ -62,22 +62,22 @@
             "question_header": "Calcule.",
             "pontuation": 2.0, 
             "double_items": 1, 
-            "items_number": 4, 
+            "items_number": 5, 
             "question_ending": "",
-            "id_competence": ""
+            "id_competence": "EF06MA10"
         },
 
         {
             "id_question": "fracpowr01",
             "question_subject": "Fractions",
-            "question_type": "Arithmetic",
+            "question_type": "Power",
             "question_difficulty": 1,
             "question_header": "Calcule as potências a seguir.",
             "pontuation": 1.5, 
             "double_items": 0, 
             "items_number": 5, 
             "question_ending": "",
-            "id_competence": ""
+            "id_competence": "EF06MA11"
         }
     ]
 }

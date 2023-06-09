@@ -1,10 +1,11 @@
+import os
+import datetime
 import sql_manipulation as sqlm
 import my_fractions as frac
 import periodical_decimal as perd
 import operations as op
 import questions as qst
 import aspose.pdf as ap
-import os
 
 def main():
 
@@ -16,7 +17,7 @@ def main():
 
     consult = sqlm.Consultation(subject, data_type="subject")
 
-    qst.begin_document()
+    begin_document()
 
     for data in consult.infos:
 
@@ -24,14 +25,41 @@ def main():
 
         quest.write_question_in_latex()
 
-    qst.end_document()
-
-    options = ap.TeXLoadOptions()
-
-    document = ap.Document(file_path , options)
-
-    document.save("temp.pdf")
+    end_document()
 
     print("Concluído!!!")
 
+
+def begin_document():
+
+    data_path = os.path.join(os.getcwd(), "data")
+
+    file_path = os.path.join(data_path, "temp.tex")
+
+    file = open(file_path, "w", encoding="UTF-8")
+
+    document_beggining = "\\documentclass{article}\n\n\\usepackage{graphicx}\n\\usepackage[brazilian]{babel}\n\n\\title{Avaliação}\n\\author{Lucas L. Valente}\
+        \n\\date{%s}\n\n\\begin{document}\n\maketitle\n\\newpage\n\n\\begin{enumerate}\n" % (str(datetime.date.today()))
+
+    file.write(document_beggining)
+
+    file.close()
+
+
+def end_document():
+
+    data_path = os.path.join(os.getcwd(), "data")
+
+    file_path = os.path.join(data_path, "temp.tex")
+    
+    file = open(file_path, "a+", encoding="UTF-8")
+
+    document_ending = "\\end{enumerate}\n\\end{document}"
+
+    file.write(document_ending)
+
+    file.close()
+
+
 main()
+

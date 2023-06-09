@@ -15,6 +15,8 @@ def main():
 
 	command = f"""DELETE FROM Questions;""" 
 
+	cursor.execute(command)
+
 	directory_path = os.path.dirname(os.path.dirname(__file__))
 
 	json_file = 'questions_backup_data.json' 
@@ -45,6 +47,8 @@ def main():
                     
 			cursor.execute(command)
 			cursor.commit()
+
+			print(f"Question {id_question} inserted!!")
 
 
 main()

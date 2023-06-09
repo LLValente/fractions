@@ -1,7 +1,7 @@
-import pyodbc
-import datetime
 import os
 import sys
+import random as rd
+import pyodbc
 
 main_path = os.getcwd()
 
@@ -106,16 +106,15 @@ class Question:
 
         fractions = self.items
 
-        latex_question_header = "\t" + r"\item " + self.header + r" \textbf{(" + str(self.pontuation) + r" pontos)}" + "\n"
-        latex_items_block = "\t\t" + r"\begin{enumerate}" + "\n"
+        latex_question_header = "\t\\item %s \\textbf{(%.1f pnts)}\n\n" % (self.header, self.pontuation)
+        latex_items_block = "\t\t\\begin{enumerate}\n"
         latex_items = ''
 
         if self.double_items == 0:
 
             for fraction in fractions:
 
-                latex_item = "\t\t\t" + r"\item $\frac{" + str(fraction.numerator) + "}{" + str(fraction.denominator) + "}$\n"
-
+                latex_item = "\t\t\t\\item $\\frac{%i}{%i}$\n" % (fraction.numerator, fraction.denominator)
                 latex_items = latex_items + latex_item
 
         elif self.double_items == 1:
@@ -124,57 +123,34 @@ class Question:
 
                 for i in range(0, int(len(fractions)/2)):
 
-                    latex_item = "\t\t\t" + r"\item $\frac{" + str(fractions[i].numerator) + "}{" + str(fractions[i].denominator) + "}$" + \
-                    " e " + r"$\frac{" + str(fractions[i + 1].numerator) + "}{" + str(fractions[i + 1].denominator) + "}$" + "\n"
+                    latex_item = "\t\t\t\\item $\\frac{%i}{%i}$ e $\\frac{%i}{%i}$\n" % \
+                        (fractions[i].numerator, fractions[i].denominator, fractions[i + 1].numerator, fractions[i + 1].denominator)
 
                     latex_items = latex_items + latex_item
 
-            else:
+            elif self.id_question == "fracarit01":
 
-                operators = ["+", "-", ".", ":"]
+                operators = ["+", "-", ".", ":", "^"]
 
                 for i in range(0, int(len(fractions)/2)):
 
-                    latex_item = "\t\t\t" + r"\item $\frac{" + str(fractions[i].numerator) + "}{" + str(fractions[i].denominator) + "}$" + \
-                    f" {operators[i]} " + r"$\frac{" + str(fractions[i + 1].numerator) + "}{" + str(fractions[i + 1].denominator) + "}$" + "\n"
+                    if operators[i] != "^":
+
+                        latex_item = "\t\t\t\\item $\\frac{%i}{%i}$ %s $\\frac{%i}{%i}$\n" % \
+                            (fractions[i].numerator, fractions[i].denominator, operators[i], fractions[i + 1].numerator, fractions[i + 1].denominator)
+
+                        latex_items = latex_items + latex_item
+
+                        continue
+                    
+                    latex_item = "\t\t\t\\item $\\left(\\frac{%i}{%i}\\right) %s %i$\n" % \
+                        (fractions[i].numerator, fractions[i].denominator, operators[i], rd.randint(2, 3))
 
                     latex_items = latex_items + latex_item
 
-        latex_question_ending = "\t\t" + r"\end{enumerate}" + "\n"
+        latex_question_ending = "\t\t\\end{enumerate}\n\n"
 
-        with open(file_path, "a+") as ltx_file:
+        with open(file_path, "a+", encoding="UTF-8") as ltx_file:
 
             ltx_file.write(latex_question_header + latex_items_block + latex_items + latex_question_ending)
-
-
-def begin_document():
-
-    data_path = os.path.join(os.getcwd(), "data")
-
-    file_path = os.path.join(data_path, "temp.tex")
-
-    file = open(file_path, "w")
-
-    document_beggining = r"\documentclass{article}" + "\n" + r"\usepackage{graphicx}" + "\n" + r"\usepackage[brazilian]{babel}" + "\n" + r"\title{Avaliação}" \
-    + "\n" + r"\author{Lucas L. Valente}" + "\n" + r"\date{" + str(datetime.date.today()) + "}" + "\n\n" + r"\begin{document}" + "\n\n" + r"\maketitle" + "\n\n" + r"\newpage" + "\n\n" + \
-    r"\begin{enumerate}" + "\n"
-
-    file.write(document_beggining)
-
-    file.close()
-
-
-def end_document():
-
-    data_path = os.path.join(os.getcwd(), "data")
-
-    file_path = os.path.join(data_path, "temp.tex")
-    
-    file = open(file_path, "a+")
-
-    document_ending = r"\end{enumerate}" + "\n\n" + r"\end{document}"
-
-    file.write(document_ending)
-
-    file.close()
 

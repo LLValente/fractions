@@ -1,4 +1,4 @@
-This is ObjectTeX, Version 3.1415926-1.0 (TeX engine: Aspose.TeX 22.12) (preloaded format=objectlatex 2022.12.13)  6 jun 2023 10:23
+This is ObjectTeX, Version 3.1415926-1.0 (TeX engine: Aspose.TeX 22.12) (preloaded format=objectlatex 2022.12.13)  6 jun 2023 10:58
 entering extended mode
 **
 (
@@ -89,16 +89,19 @@ LaTeX Font Info:    External font `cmex10' loaded for size
  [1
 
 ]
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 17.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 17.
 Missing character: There is no ^^ef in font cmr10!
 Missing character: There is no ^^bf in font cmr10!
 Missing character: There is no ^^bd in font cmr10!
 Missing character: There is no ^^ef in font cmr10!
 Missing character: There is no ^^bf in font cmr10!
 Missing character: There is no ^^bd in font cmr10!
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 15.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 15.
+Missing character: There is no ^^ef in font cmr10!
+Missing character: There is no ^^bf in font cmr10!
+Missing character: There is no ^^bd in font cmr10!
 Missing character: There is no ^^ef in font cmr10!
 Missing character: There is no ^^bf in font cmr10!
 Missing character: There is no ^^bd in font cmr10!
@@ -144,6 +147,6 @@ Here is how much of TeX's memory you used:
  3843 multiletter control sequences out of 
   words of font info for 25 fonts, out of  for 75
  14 hyphenation exceptions out of 307
- 27i, 6n, 19p, b, 203s stack positions out of 5000i, 40n, 200p, b, 6000s
+ 27i, 6n, 19p, b, 232s stack positions out of 5000i, 40n, 200p, b, 6000s
 
 Output written on object model (2 pages).

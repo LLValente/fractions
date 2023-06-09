@@ -1,7 +1,7 @@
 import random as rd
 from fractions import Fraction
 
-class periodic_decimal:
+class Periodic_decimal:
 
     def __init__(self, num_integers = 1, num_non_periodical_numbers = 0, num_periodical_numbers = 1):
 

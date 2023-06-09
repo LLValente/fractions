@@ -1,12 +1,5 @@
 import random as rd
 from num2words import num2words as nw
-import os
-import sys
-
-main_path = os.getcwd()
-op_path = os.path.join(main_path, 'modules\\math')
-
-sys.path.append(op_path)
 import operations as op
 
 
@@ -38,8 +31,8 @@ class Fraction:
 
         if num == None and den == None and fraction == None:
 
-            numerator = rd.randint(1, 30)
-            denominator = rd.randint(1, 30)
+            numerator = rd.randint(1, 15)
+            denominator = rd.randint(1, 15)
 
         elif type(num) is int and type(den) is int and fraction == None:
 
