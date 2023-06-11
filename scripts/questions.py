@@ -2,17 +2,10 @@ import os
 import sys
 import random as rd
 import datetime
+
 import pyodbc
 
-main_path = os.getcwd()
-
-sql_path = os.path.join(main_path, 'modules\\sql')
-frac_path = os.path.join(main_path, 'modules\\math')
-
-sys.path.append(sql_path)
 import sql_manipulation as sm
-
-sys.path.append(frac_path)
 import my_fractions as frac
 
 
@@ -101,10 +94,6 @@ class Question:
 
     def write_question_in_latex(self):
 
-        data_path = os.path.join(os.getcwd(), "exams")
-
-        file_path = os.path.join(data_path, f"Avaliação - Fractions - [{str(datetime.date.today())}].tex")
-
         fractions = self.items
 
         latex_question_header = "\t\\item %s \\textbf{(%.1f pnts)}\n\n" % (self.header, self.pontuation)
@@ -115,7 +104,7 @@ class Question:
 
             for fraction in fractions:
 
-                latex_item = "\t\t\t\\item $\\frac{%i}{%i}$\n" % (fraction.numerator, fraction.denominator)
+                latex_item = "\t\t\t" "\\item " + f"${fraction.latex_line}$\n"
                 latex_items = latex_items + latex_item
 
         elif self.double_items == 1:
@@ -124,8 +113,7 @@ class Question:
 
                 for i in range(0, int(len(fractions)/2)):
 
-                    latex_item = "\t\t\t\\item $\\frac{%i}{%i}$ e $\\frac{%i}{%i}$\n" % \
-                        (fractions[i].numerator, fractions[i].denominator, fractions[i + 1].numerator, fractions[i + 1].denominator)
+                    latex_item = "\t\t\t" + f"\\item ${fractions[i].latex_line} e {fractions[i + 1].latex_line}$\n"
 
                     latex_items = latex_items + latex_item
 
@@ -137,21 +125,18 @@ class Question:
 
                     if operators[i] != "^":
 
-                        latex_item = "\t\t\t\\item $\\frac{%i}{%i}$ %s $\\frac{%i}{%i}$\n" % \
-                            (fractions[i].numerator, fractions[i].denominator, operators[i], fractions[i + 1].numerator, fractions[i + 1].denominator)
+                        latex_item = "\t\t\t" + f"\\item ${fractions[i].latex_line} {operators[i]} {fractions[i + 1].latex_line}$\n"
 
                         latex_items = latex_items + latex_item
 
                         continue
                     
-                    latex_item = "\t\t\t\\item $\\left(\\frac{%i}{%i}\\right) %s %i$\n" % \
-                        (fractions[i].numerator, fractions[i].denominator, operators[i], rd.randint(2, 3))
+                    latex_item = "\t\t\t" + f"\\item $\\left({fractions[i].latex_line}\\right) {operators[i]} {rd.randint(2, 3)}$\n"
 
                     latex_items = latex_items + latex_item
 
-        latex_question_ending = "\t\t\\end{enumerate}\n\n"
+        latex_question_ending = "\t\t" + "\\end{enumerate}\n\n"
 
-        with open(file_path, "a+", encoding="UTF-8") as ltx_file:
+        question_in_latex = latex_question_header + latex_items_block + latex_items + latex_question_ending
 
-            ltx_file.write(latex_question_header + latex_items_block + latex_items + latex_question_ending)
-
+        return question_in_latex

@@ -1,60 +1,81 @@
+import os
 import random as rd
+import json
+
 from num2words import num2words as nw
+
 import operations as op
 
 
-FRACTIONAL_NUMBERS_DICT =   {"2": "meio",
-                            "3": "terço",
-                            "4": 'quarto',
-                            "5": 'quinto',
-                            "6": 'sexto',
-                            "7": 'sétimo',
-                            "8": 'oitavo',
-                            "9": 'nono',
-                            "10": 'décimo',
-                            "100": 'centésimo'}         
+directory_path = os.path.dirname(os.path.dirname(__file__))
+
+json_file = 'fractional_number_names.json'
+
+json_path = os.path.join(directory_path, "data", json_file) 
+
+with open(json_path, "r", encoding="utf8") as file:
+
+    FRACTIONAL_NUMBERS_DICT = json.load(file)
 
 
 class Fraction:
 
-    def __init__(self, num = None, den = None, fraction = None):
-
-        def is_iterable(object):
-
-            try:
-                iter_obj = iter(object)
-                return True
-
-            except:
-                return False
-
-
-        if num == None and den == None and fraction == None:
-
-            numerator = rd.randint(1, 15)
-            denominator = rd.randint(1, 15)
-
-        elif type(num) is int and type(den) is int and fraction == None:
-
-            numerator = num
-            denominator = den
-
-        elif num == None and den == None and is_iterable(fraction) and len(fraction) == 2:
-
-            numerator = fraction[0]
-            denominator = fraction[1]
-
-        else:
-
-            raise TypeError('Fraction class needs two integers or a list parameter containing two integers')
-
+    def __init__(self, *args):
+        
+        action = self.test_args(args)
+        
+        if action is None: numerator, denominator = rd.randint(1, 15), rd.randint(1, 15)
+        elif action == 'iterable': numerator, denominator = args[0]
+        elif action is True: numerator, denominator = args
+        
         self.numerator = numerator
         self.denominator = denominator
         self.fraction = (self.numerator, self.denominator)
         self.name = self.name()
-        self.type = self.fraction_type()
-        self.latex = u'\u005c' + 'fraction' + "{" + str(self.numerator) + "}" + "{" + str(self.denominator) + "}"
+        self.latex_line = "\\frac{%i}{%i}" % self.fraction
 
+
+    @staticmethod
+    def test_args(args):
+
+        if type(args) == int():
+
+            raise IndexError(f"Expected 2 integers or an interable, but 1 integer was given.")
+
+        elif len(args) == 0:
+
+            return None
+
+        elif len(args) == 1:
+
+            if type(args[0]) is int: raise IndexError(f"Expected 2 integers or an interable, but 1 integer was given.")
+
+            elif len(args[0]) == 0:
+
+                return None
+
+            elif len(args[0]) == 2:
+
+                return 'iterable'
+
+            else:
+
+                raise IndexError(f"Expected 2 integers or an interable, but {len(args)} argument was given.")
+
+        elif len(args) > 2:
+
+            raise IndexError(f"Expected 2 integers or an interable, but {len(args)} arguments were given.")
+
+        for arg in args:
+
+            if type(arg) in [str, dict]:
+
+                raise TypeError(f"{arg} is a {type(arg)}.")
+
+            else:
+
+                return True
+       
 
     def name(self):
         '''Names the Fraction object
